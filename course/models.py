@@ -10,10 +10,17 @@ class Course(BaseModel):
 	short_desc = models.TextField(blank=True,max_length=150)
 	long_desc = models.TextField(blank=True,max_length=255)
 
+	def __str__(self):
+		return f"{self.title}" or f"No title"
+
 class Lesson(BaseModel):
 	course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
+	title = models.CharField(max_length=50,null=True,blank=True)
 	content = models.TextField(blank=False, max_length=560)
 	video_link = models.URLField(blank=True,null=True)
+
+	def __str__(self):
+		return f"{self.title}" or f"No title"
 	
 
 class Enrollments(models.Model):

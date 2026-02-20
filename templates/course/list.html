@@ -1,0 +1,45 @@
+{%extends "base.html" %}
+{%block title%}Courses{%endblock%}
+
+{%block content%}
+
+
+
+<div class="container my-5">
+  <div class="d-flex flex-column mb-3">
+ 
+    
+    {% for course in course %}
+       <!-- Card 1 -->
+<div class="col-md-12 mb-4">
+  <div class="card h-100 overflow-hidden"> <div class="row g-0 h-100 d-flex align-items-stretch"> <div class="col-md-4 position-relative">
+        <img src="https://placehold.co/180" 
+             class="img-fluid rounded-start" 
+             alt="Course Image" 
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+      </div>
+
+      <div class="col-md-8">
+        <div class="card-body h-100 d-flex flex-column justify-content-center">
+          <small class="text-muted">Title</small>
+          <h5 class="card-title mb-1">{{course.title}}</h5>
+          
+          <small class="text-muted mt-2">Short Description</small>
+          <p class="card-text mb-3">{{course.short_desc}}</p>
+          
+          <a href="#" class="btn btn-danger ">Enroll Now</a>
+                    <!-- <a href="#" class="btn btn-danger align-self-start">Enroll Now</a> -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>   
+        {% empty %}
+            <li>No items available.</li>
+        {% endfor %}
+ 
+           
+  </div>
+</div>
+{%endblock content %}

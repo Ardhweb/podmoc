@@ -5,18 +5,23 @@ from django.utils.timezone import now
 from datetime import timedelta
 from core.models import BaseModel
 
-USER_ROLE_CHOICES = [
-    (1, "Teacher"),
-    (2, "Students"),
-    (3, "Admin staff"),
-]
 class User(AbstractUser):
+    class UserRole(models.TextChoices):
+        TEACHER = "teacher", "Teacher"
+        STUDENT = "student", "Student"
+        ADMIN = "admin", "Admin staff"
+
+    user_role = models.CharField(
+        max_length=20,
+        choices=UserRole.choices,
+        default=UserRole.STUDENT,
+        db_index=True,
+    )
     #username = None  # Remove username field
     email = models.EmailField(unique=True)  # Ensure email is unique
-    user_role = models.CharField(max_length=50,null=False,blank=False,choices=USER_ROLE_CHOICES)
     is_email_verified = models.BooleanField(default=False)
     #USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    #REQUIRED_FIELDS = []
     objects = UserManager()
     groups = models.ManyToManyField(
         'auth.Group',
