@@ -1,10 +1,11 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import Course,Lesson
-from django.shortcuts import get_object_or_404
+from .models import Course,Lesson,Enrollments
+from django.shortcuts import get_object_or_404,HttpResponse,redirect
 from django.views.generic import ListView,DetailView
-
+from .forms import EnrollmentForm
+from accounts.models import User 
 
 class CourseList(ListView):
     model=Course
@@ -24,6 +25,34 @@ class CourseDetail(DetailView):
         context = super().get_context_data(**kwargs)
         # Fetch lessons related to the course
         course_lesson = Lesson.objects.filter(course=self.kwargs['pk']).order_by('-created_at')
+        is_enrolled = False
+
+        # Only check if user is logged in
+        if self.request.user.is_authenticated:
+            is_enrolled = Enrollments.objects.filter(
+            student=self.request.user,
+            course=self.kwargs['pk']).exists()
+
         context['course_lesson'] = course_lesson
+        context['is_enrolled'] = is_enrolled
+        print(is_enrolled)
         return context
 
+
+def enroll_to_course(request,course_id):
+    if request.user.is_authenticated and request.method=='POST':
+        form = EnrollmentForm(request.POST)
+        if request.user.user_role==User.UserRole.STUDENT:
+            try:
+                if form.is_valid():
+                    course = get_object_or_404(Course, id=course_id)
+                    enroll = Enrollments.objects.create(student=request.user, course_id=course_id)
+                    return redirect("course:course_details", pk=course_id)
+            except Exception as e:
+                return HttpResponse(f"An error occurred: {str(e)}", status=500)
+        else:
+            return HttpResponse(f"You do not have permission to  enroll please use different account/student account to  enroll:")
+    else:
+        form = EnrollmentForm()
+        course = get_object_or_404(Course, id=course_id)
+    return render(request, "course/enroll_page.html", {"form":form,"course":course})

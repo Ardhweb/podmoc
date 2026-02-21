@@ -1,0 +1,41 @@
+{%extends "base.html" %}
+{%block title%}Enrollements{%endblock%}
+
+{%block content%}
+
+
+
+<div class="container my-5">
+  <div class="d-flex flex-column mb-3">
+ 
+         
+         
+{%if request.user.is_authenticated%}
+      
+      <!-- First Card: Vertical Layout with Image on Top as Separate Section -->
+      <div class="col-8 mb-4">
+        <div class="card h-100 overflow-hidden">
+      
+        <h3>{{course.title}}</h3>
+      
+
+         <form method="POST" class="p-4 ">
+        <!-- Heading -->
+        <h2 class="text-center mb-4">Enrollment to Course {{course.title}}</h2>
+
+        {% csrf_token %}
+        {{form.as_p }}
+
+        <div class="d-grid gap-2">
+            <input type="submit" class="btn btn-primary mb-3  mt-3" value="Enroll to course">
+        </div>
+        
+       
+    </form>
+         </div>
+      </div>
+{%endif%}
+  </div>
+
+</div>
+{%endblock content %}

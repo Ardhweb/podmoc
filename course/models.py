@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from core.models import BaseModel
-from accounts.models import User, TeacherProfile, StudentProfile
+from accounts.models import User
 
 class Course(BaseModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,7 +28,7 @@ class Lesson(BaseModel):
 
 class Enrollments(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    student = models.ForeignKey(StudentProfile, on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     is_paused = models.BooleanField(default=False)
     grade = models.CharField(max_length=10, null=True, blank=True)
     is_completed = models.BooleanField(default=False)
