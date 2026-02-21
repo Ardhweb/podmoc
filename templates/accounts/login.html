@@ -12,8 +12,14 @@
         {% csrf_token %}
         {{ login_form.as_p }}
 
-        <div class="text-center">
-            <input type="submit" class="btn btn-primary mt-3" value="Submit">
+        <div class="d-grid gap-2">
+            <input type="submit" class="btn btn-primary mb-3  mt-3" value="Login">
+        </div>
+        
+        <!-- Add the signup link below the form -->
+        <div class="text-start mt-3">
+            <span>Don't have an account?</span>
+            <a href="{% url 'accounts:student_signup' %}" class="btn btn-dark btn-sm"> Sign up</a>
         </div>
     </form>
 </div>

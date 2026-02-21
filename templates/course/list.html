@@ -27,7 +27,7 @@
           <small class="text-muted mt-2">Short Description</small>
           <p class="card-text mb-3">{{course.short_desc}}</p>
           
-          <a href="#" class="btn btn-danger ">Enroll Now</a>
+          <a href="{%url "course:course_details" pk=course.pk %}" class="btn btn-danger ">Course Details</a>
                     <!-- <a href="#" class="btn btn-danger align-self-start">Enroll Now</a> -->
         </div>
       </div>
