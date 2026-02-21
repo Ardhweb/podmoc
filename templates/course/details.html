@@ -13,7 +13,7 @@
 
       
       <!-- First Card: Vertical Layout with Image on Top as Separate Section -->
-      <div class="col-8 mb-4">
+      <div class="col-md-12 mb-4">
         <div class="card h-100 overflow-hidden">
       
           <!-- Content Section -->
@@ -32,7 +32,7 @@
     <p>You are enrolled in this course</p>
 
 {% elif request.user.is_authenticated and not is_enrolled %}
-    <a href="#" class="btn btn-danger mt-auto">Enroll Now</a>
+    <a href="{% url 'course:course_enroll' course_id=course.id %}" class="btn btn-danger mt-auto">Enroll Now</a>
 
 {% else %}
     <a href="{% url 'accounts:student_login' %}" 
@@ -45,7 +45,7 @@
       </div>
 
      <!-- Second Card: Collapsible List Group with Dropdown Icon on the Right and Vertical Alignment -->
-<div class="col-md-4 mb-4">
+<div class="col-md-12 mb-4">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Chapters / Lessons</h5>
@@ -57,10 +57,11 @@
          <!-- Non-clickable text -->
 <div class="d-flex justify-content-between align-items-center">
   <span class="fw-bold">{{ lesson.title|default:"No title" }}</span>
-  
+  {% if request.user.is_authenticated and is_enrolled %}
   <button class="btn btn-sm btn-dark rounded-4 text-left d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItem{{forloop.counter}}" aria-expanded="false" aria-controls="collapseItem{{forloop.counter}}">
     see
   </button>
+  {% endif %}
 </div>
 
 
@@ -72,8 +73,9 @@
           <div class="collapse" id="collapseItem{{forloop.counter}}">
  <small><span class="fw-semibold">created at</span>: {{lesson.created_at}}</small>
             <div class="card card-body">
-              <p>{{lesson.content|default:""}}</p>
+             
               {% if request.user.is_authenticated and is_enrolled %}
+               <p>{{lesson.content|default:""}}</p>
               <a href="{{lesson.video_link}}" class="btn btn-danger btn-sm"> Watch now</a>
               {%endif%}
             </div>

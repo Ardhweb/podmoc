@@ -39,3 +39,31 @@ class Enrollments(models.Model):
     class Meta:
         unique_together = ('course', 'student')
 
+    def get_absolute_url(self):
+        return reverse("enrollments", kwargs={"course_id": self.course.pk})
+
+
+class LessonProgress(models.Model):
+    NOT_STARTED = 'not_started'
+    IN_PROGRESS = 'in_progress'
+    COMPLETED = 'completed'
+
+    PROGRESS_CHOICES = [
+        (NOT_STARTED, 'Not Started Yet'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETED, 'Completed'),
+    ]
+    
+    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
+    enrollment = models.ForeignKey(Enrollments, on_delete=models.CASCADE)
+    progress = models.CharField(
+        max_length=20,
+        choices=PROGRESS_CHOICES,
+        default=NOT_STARTED,
+    )
+    completed_at = models.DateTimeField(null=True, blank=True) 
+
+    # class Meta:
+    #     unique_together = ('enrollment',) 
+
+

@@ -1,11 +1,12 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import Course,Lesson,Enrollments
+from .models import Course,Lesson,Enrollments,LessonProgress
 from django.shortcuts import get_object_or_404,HttpResponse,redirect
 from django.views.generic import ListView,DetailView
 from .forms import EnrollmentForm
 from accounts.models import User 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 class CourseList(ListView):
     model=Course
@@ -25,6 +26,7 @@ class CourseDetail(DetailView):
         context = super().get_context_data(**kwargs)
         # Fetch lessons related to the course
         course_lesson = Lesson.objects.filter(course=self.kwargs['pk']).order_by('-created_at')
+        
         is_enrolled = False
 
         # Only check if user is logged in
@@ -47,6 +49,7 @@ def enroll_to_course(request,course_id):
                 if form.is_valid():
                     course = get_object_or_404(Course, id=course_id)
                     enroll = Enrollments.objects.create(student=request.user, course_id=course_id)
+                    #lesson_progress = LessonProgress.objects.create_bulk(enrollments=enroll,lesson=)
                     return redirect("course:course_details", pk=course_id)
             except Exception as e:
                 return HttpResponse(f"An error occurred: {str(e)}", status=500)
@@ -56,3 +59,13 @@ def enroll_to_course(request,course_id):
         form = EnrollmentForm()
         course = get_object_or_404(Course, id=course_id)
     return render(request, "course/enroll_page.html", {"form":form,"course":course})
+
+
+class MyCourseView(LoginRequiredMixin,ListView):
+    model = Enrollments
+    context_object_name = 'enrolled_courses'
+    login_url = '/users/students/login'
+    template_name = 'course/my_course.html'
+
+    def get_queryset(self):
+        return Enrollments.objects.filter(student=self.request.user).order_by('-created_at')
