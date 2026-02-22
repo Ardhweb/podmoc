@@ -5,7 +5,7 @@ from core.models import BaseModel
 from accounts.models import User
 
 class Course(BaseModel):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50,null=False,blank=False)
     short_desc = models.TextField(blank=True,max_length=150)
     long_desc = models.TextField(blank=True,max_length=255)

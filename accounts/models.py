@@ -34,6 +34,7 @@ class User(AbstractUser):
         blank=True,
     )
 
+    
 
 class TeacherProfile(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
