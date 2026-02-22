@@ -32,7 +32,8 @@
         <a href="">{{request.user.username}}| {{request.user.email}}</a>
          <a href="{%url "accounts:logout"%}" class="btn-danger btn btn-sm rounded-2">Logout</a>
         {%else%}
-        <a  href="{%url "accounts:student_signup" %}" class="btn-primary btn btn-sm">Signup</a>
+        <a  href="{%url "accounts:student_signup" %}" class="btn-primary btn btn-sm">Signup as Student</a>
+         <a  href="{%url "accounts:teacher_signup" %}" class="btn-primary btn btn-sm">Signup as teacher</a>
         <a href="{% url "accounts:student_login"%}" class="btn-secondary btn btn-sm rounded-2">Login</a>
         {%endif%}
       </div>

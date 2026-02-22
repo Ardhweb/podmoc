@@ -49,3 +49,25 @@ def login_user(request):
 def logout_user(request):
     logout(request)  # Log the user out
     return redirect('index')
+
+
+def register_teacher_user(request):
+    if request.method == 'POST':
+        user_form = SignupForm(request.POST)
+        if user_form.is_valid ():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.user_role == User.UserRole.TEACHER
+            try:
+                new_user.save()
+            except Exception as e:
+                return HttpResponse(f"Teacher User Creation Issue: {e}")
+            user = authenticate(request,  username_or_email=user_form.cleaned_data['email'], password=user_form.cleaned_data['password'])
+            if user:
+                login(request, user)
+                return redirect('index')
+            else:
+                return HttpResponse("User not Exist!")   
+    else:
+        user_form = SignupForm()
+    return render(request,'accounts/register_teacher.html',{'user_form': user_form})

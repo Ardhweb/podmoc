@@ -54,7 +54,7 @@ class LessonProgress(models.Model):
         (COMPLETED, 'Completed'),
     ]
     
-    lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     enrollment = models.ForeignKey(Enrollments, on_delete=models.CASCADE)
     progress = models.CharField(
         max_length=20,
@@ -65,5 +65,8 @@ class LessonProgress(models.Model):
 
     # class Meta:
     #     unique_together = ('enrollment',) 
+
+    def __str__(self):
+        return f"{self.progress} {self.id}"
 
 

@@ -58,9 +58,34 @@
 <div class="d-flex justify-content-between align-items-center">
   <span class="fw-bold">{{ lesson.title|default:"No title" }}</span>
   {% if request.user.is_authenticated and is_enrolled %}
+  
+
+       
+        
+            <p id="track-progress-{{ lesson.id }}">
+    Status: 
+    <span id="status-text-{{ lesson.id }}">
+        {% if lesson.user_progress %}
+            {{ lesson.user_progress.get_progress_display }}
+        {% else %}
+            Not Started
+        {% endif %}
+    </span>
+
+    <input 
+        id="lesson-check-{{ lesson.user_progress.id }}" 
+        type="checkbox" 
+        {% if lesson.user_progress.progress == 'completed' %} checked disabled {% endif %}
+       onchange="triggerLessonUpdate({{ lesson.user_progress.id }})"
+    />
+</p>
+  
+       
   <button class="btn btn-sm btn-dark rounded-4 text-left d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#collapseItem{{forloop.counter}}" aria-expanded="false" aria-controls="collapseItem{{forloop.counter}}">
     see
   </button>
+
+  
   {% endif %}
 </div>
 
@@ -93,4 +118,63 @@
 
     </div>
   </div>
+
+
 {%endblock content %}
+
+
+{%block scripts%}
+<script>
+function triggerLessonUpdate(lessonprogressId) {
+    const checkbox = document.getElementById(`lesson-check-${lessonprogressId}`);
+    const statusSpan = document.getElementById(`status-text-${lessonprogressId}`);
+
+    // Only send the request if the checkbox is being checked
+    if (checkbox.checked) {
+        fetch(`/course/complete-lesson/${lessonprogressId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Helper function to get token
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                'id': lessonprogressId
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                // UI SUCCESS CHANGES
+                statusSpan.innerText = 'Completed'; // Update the span
+                checkbox.disabled = true;          // Make uneditable
+                console.log(`Lesson ${lessonprogressId} marked as finished.`);
+            } else {
+                // Revert UI if server fails
+                checkbox.checked = false;
+                alert("Could not update progress. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            checkbox.checked = false;
+        });
+    }
+}
+
+// Standard Django helper function to get CSRF token from cookies
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{%endblock scripts%}

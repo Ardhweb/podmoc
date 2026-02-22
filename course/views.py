@@ -7,6 +7,9 @@ from django.views.generic import ListView,DetailView
 from .forms import EnrollmentForm
 from accounts.models import User 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Prefetch
+from django.db.models import FilteredRelation, Q
+from django.http import JsonResponse
 
 class CourseList(ListView):
     model=Course
@@ -21,23 +24,34 @@ class CourseDetail(DetailView):
 
     def get_object(self,queryset=None):
         return get_object_or_404(Course, pk=self.kwargs['pk'])
+    
+    
+   
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Fetch lessons related to the course
-        course_lesson = Lesson.objects.filter(course=self.kwargs['pk']).order_by('-created_at')
-        
-        is_enrolled = False
-
-        # Only check if user is logged in
-        if self.request.user.is_authenticated:
-            is_enrolled = Enrollments.objects.filter(
-            student=self.request.user,
-            course=self.kwargs['pk']).exists()
-
-        context['course_lesson'] = course_lesson
-        context['is_enrolled'] = is_enrolled
-        print(is_enrolled)
+        course_id = self.kwargs['pk']
+        user = self.request.user
+    
+        enrollment = None
+        if user.is_authenticated:
+            enrollment = Enrollments.objects.filter(
+                student=user, 
+                course_id=course_id
+            ).first()
+    
+        if enrollment:
+            course_lessons = Lesson.objects.filter(course_id=course_id).annotate(
+                user_progress=FilteredRelation(
+                    'lessonprogress', 
+                    condition=Q(lessonprogress__enrollment=enrollment)
+                )
+            ).select_related('user_progress').order_by('created_at')
+        else:
+            course_lessons = Lesson.objects.filter(course_id=course_id).order_by('created_at')
+    
+        context['course_lesson'] = course_lessons
+        context['is_enrolled'] = bool(enrollment)
         return context
 
 
@@ -69,3 +83,12 @@ class MyCourseView(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         return Enrollments.objects.filter(student=self.request.user).order_by('-created_at')
+
+
+def complete_lesson(request, id):
+    if request.method == "POST":
+       # Best for single objects
+        progress = LessonProgress.objects.get(id=id)
+        progress.progress = "completed"
+        progress.save()
+        return JsonResponse({'status': 'success'})
