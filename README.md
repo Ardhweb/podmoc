@@ -130,4 +130,25 @@ Once logged in, visit the home page and click on the **Explore Courses** button 
 To enroll in a course, click on the course you're interested in, then click the **Enroll** button.
 
 The student will now be enrolled in the course.
+<img width="1023" height="767" alt="Screenshot_7" src="https://github.com/user-attachments/assets/52ef4b7a-5d6b-4f7b-a5d0-396828c3a80f" />
+<img width="1023" height="767" alt="Screenshot_6" src="https://github.com/user-attachments/assets/c11981fa-6d04-4d37-af38-3d1d53c61850" />
+<img width="1023" height="767" alt="Screenshot_5" src="https://github.com/user-attachments/assets/f234a375-3646-4dd0-848f-e5b636530ffc" />
+<img width="1023" height="767" alt="Screenshot_4" src="https://github.com/user-attachments/assets/f7774ff4-97da-42b5-871f-023411f79c68" />
+<img width="1023" height="767" alt="Screenshot_3" src="https://github.com/user-attachments/assets/6194707c-51fe-45ae-a162-42aa82024e89" />
+<img width="1023" height="681" alt="Screenshot_2" src="https://github.com/user-attachments/assets/93b8c032-4bc7-41bc-a89f-ed4686a93fe3" />
+<img width="1023" height="767" alt="Screenshot_17" src="https://github.com/user-attachments/assets/a8213890-3af2-4199-90ea-4dd9ae27cb02" />
+<img width="753" height="607" alt="Screenshot_16" src="https://github.com/user-attachments/assets/f5fb87c2-0ac0-440b-881a-c2777381dfc8" />
+<img width="1023" height="767" alt="Screenshot_15" src="https://github.com/user-attachments/assets/586dff76-0bf4-4cca-873e-4da514558e7a" />
+<img width="1023" height="767" alt="Screenshot_14" src="https://github.com/user-attachments/assets/66321ca3-ccf7-45b3-9041-d76a20b8eb35" />
+<img width="1023" height="767" alt="Screenshot_13" src="https://github.com/user-attachments/assets/bc17953a-530e-4c74-b07a-d607b8220c09" />
+<img width="1023" height="767" alt="Screenshot_12" src="https://github.com/user-attachments/assets/35cde3c4-7d33-4980-abd3-864ee655656b" />
+<img width="1023" height="767" alt="Screenshot_11" src="https://github.com/user-attachments/assets/fac91582-9c0d-4b7c-bbff-716057387d7a" />
+<img width="1023" height="767" alt="Screenshot_10" src="https://github.com/user-attachments/assets/a0577e06-c03f-4822-91e3-0019839d4873" />
+<img width="1023" height="767" alt="Screenshot_9" src="https://github.com/user-attachments/assets/e0e45e6d-78e1-42dc-9faf-dbd4916b7a21" />
+<img width="1023" height="767" alt="Screenshot_8" src="https://github.com/user-attachments/assets/93273e06-9bc6-488c-a8a3-c6f918871e4b" />
 
+<img width="1023" height="767" alt="Screenshot_17" src="https://github.com/user-attachments/assets/5bea78f3-a925-4b45-ab69-17361ef2f341" />
+
+## Admin Panel Creditonal:
+username: admin
+password: admin
